@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col">
+    <h2 class="text-start">Tareas</h2>
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-primary" (click)="openCreate(modalForm)">Crear</button>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-12" *ngIf="tareas.length > 0"></div>
+  <table class="table table-stripped table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Titulo</th>
+        <th>Descripción</th>
+        <th>Fecha Creación</th>
+        <th>Fecha Vencimiento</th>
+        <th>Completada</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tarea of tareas">
+        <td>{{tarea.id}}</td>
+        <td>{{tarea.titulo}}</td>
+        <td>{{tarea.descripcion}}</td>
+        <td>{{tarea.fechaCreacion|date:'medium'}}</td>
+        <td>{{tarea.fechaVencimiento|date:'medium'}}</td>
+        <td>{{tarea.completada?'Sí':'No'}}</td>
+        <td>
+          <button class="btn text-primary btn-link me-3" (click)="openEdit(tarea, modalForm)"><i class="fas fa-pencil"></i></button>
+          <button (click)="openDelete(tarea, modalDelete)" class="btn text-danger btn-link"><i class="fas fa-times"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="text-center" *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i></div>
+
+<div class="col-12" *ngIf="tareas.length == 0 && !isLoading">
+  <p class="text-center">No tienes tareas</p>
+</div>
+
+<!-- Modal para crear y editar tarea -->
+<ng-template #modalForm let-modal>
+  <form [formGroup]="tareaForm" (ngSubmit)="create(modal)">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{activeTarea === null?'Crear': 'Editar'}} tarea</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="titulo">Titulo:</label>
+        <input id="titulo" class="form-control" formControlName="titulo" type="text" required>
+      </div>
+      <div class="mb-3">
+        <label for="descripcion">Descripción:</label>
+        <input id="descripcion" class="form-control" formControlName="descripcion" type="text" required>
+      </div>
+      <div class="mb-3">
+        <label for="fechaCreacion">Fecha Creación:</label>
+        <input id="fechaCreacion" class="form-control" formControlName="fechaCreacion" type="datetime-local" required>
+      </div>
+      <div class="mb-3">
+        <label for="fechaVencimiento">Fecha Vencimiento:</label>
+        <input id="fechaVencimiento" class="form-control" formControlName="fechaVencimiento" type="datetime-local" required>
+      </div>
+      <div class="mb-3">
+        <label for="completada" class="form-check-label me-2">Completada:</label>
+        <input id="completada" class="form-check-input" formControlName="completada" type="checkbox">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal.close()">Cerrar</button>
+      <button type="submit" class="btn btn-outline-primary" [disabled]="!tareaForm.valid || isCreating">Guardar <i *ngIf="isCreating" class="fas fa-spinner fa-spin"></i></button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- Modal para borrar tarea -->
+<ng-template #modalDelete let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmación</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <h6 *ngIf="activeTarea !== null">¿Estás seguro que deseas eliminar la tarea "{{ activeTarea.titulo }}"?</h6>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary me-3" (click)="modal.close()">No</button>
+    <button type="button" class="btn btn-outline-danger" (click)="delete(modal)" [disabled]="isDeleting">Sí <i *ngIf="isDeleting" class="fas fa-spinner fa-spin"></i></button>
+  </div>
+</ng-template>

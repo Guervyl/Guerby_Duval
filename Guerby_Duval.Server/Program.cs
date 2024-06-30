@@ -2,7 +2,22 @@ using AngularApp3.Server.DbContexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+var OriginClientePolicy = "OriginClientePolicy";
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Permitir el cliente conectar al Servidor si usan dominios diferentes.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: OriginClientePolicy,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                      });
+});
 
 // Add services to the container.
 
@@ -22,6 +37,8 @@ app.MapIdentityApi<IdentityUser>();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
+
+app.UseCors(OriginClientePolicy);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

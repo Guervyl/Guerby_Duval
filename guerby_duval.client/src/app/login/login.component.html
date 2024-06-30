@@ -1,0 +1,27 @@
+<div class="row">
+  <h2 class="text-center">Conectarse</h2>
+</div>
+
+<div class="row mt-5">
+  <div class="col-6 offset-3">
+    <div class="alert alert-danger" role="alert" *ngIf="hasError !== ''">
+      {{hasError}}
+    </div>
+
+    <form (ngSubmit)="login()">
+      <div class="mb-3 text-start">
+        <label for="email">Email:</label>
+        <input class="form-control" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" type="email" required>
+      </div>
+
+      <div class="mb-3 text-start">
+        <label for="password">Contraseña:</label>
+        <input class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" type="password" required>
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-primary" type="submit" [disabled]="isLoading">Ingresar <i *ngIf="isLoading" class="fas fa-spin fa-spinner"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
