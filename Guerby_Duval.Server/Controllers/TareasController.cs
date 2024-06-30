@@ -23,14 +23,14 @@ namespace AngularApp3.Server.Controllers
             _context = context;
         }
 
-        // GET: api/Tareas
+        // GET: Tareas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Tarea>>> GetTareas()
         {
             return await _context.Tareas.ToListAsync();
         }
 
-        // GET: api/Tareas/5
+        // GET: Tareas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Tarea>> GetTarea(int id)
         {
@@ -44,7 +44,7 @@ namespace AngularApp3.Server.Controllers
             return tarea;
         }
 
-        // PUT: api/Tareas/5
+        // PUT: Tareas/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTarea(int id, Tarea tarea)
         {
@@ -74,7 +74,7 @@ namespace AngularApp3.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Tareas
+        // POST: Tareas
         [HttpPost]
         public async Task<ActionResult<Tarea>> PostTarea(Tarea tarea)
         {
@@ -84,7 +84,7 @@ namespace AngularApp3.Server.Controllers
             return CreatedAtAction("GetTarea", new { id = tarea.Id }, tarea);
         }
 
-        // DELETE: api/Tareas/5
+        // DELETE: Tareas/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTarea(int id)
         {
